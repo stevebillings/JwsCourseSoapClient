@@ -1,4 +1,4 @@
-SET TOMCAT_PATH=C:\Apps\apache-tomcat-7.0.42
+SET TOMCAT_PATH=C:\apps\apache-tomcat-7.0.50
 
 del %TOMCAT_PATH%\webapps\inventoryWS.war
 
