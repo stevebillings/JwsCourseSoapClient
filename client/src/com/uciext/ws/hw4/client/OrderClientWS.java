@@ -39,11 +39,19 @@ public class OrderClientWS {
 				order.setOrderNumber("1");
 				order.setVendorCode("333");
 				order.setVendorName("Vendor333");
+
 				ProductOrder productOrder = new ProductOrder();
 				productOrder.setProductName("Kindle Fire");
 				productOrder.setProductSku("111003392854");
 				productOrder.setOrderQuantity(2.0);
 				order.getProductOrder().add(productOrder);
+
+				productOrder = new ProductOrder();
+				productOrder.setProductName("Kindle Paperwhite");
+				productOrder.setProductSku("111003392994");
+				productOrder.setOrderQuantity(3.0);
+				order.getProductOrder().add(productOrder);
+
 				SubmitOrderResponse.Return orderReturn = port.submitOrder(order);
 				System.out.println(toString(orderReturn));
 			}
@@ -54,11 +62,11 @@ public class OrderClientWS {
 
 	private static String toString(SubmitOrderResponse.Return orderReturn) {
 		StringBuilder sb = new StringBuilder();
-		sb.append("Confirm #: ");
-		sb.append(orderReturn.getConfirmNumber());
-		sb.append('\n');
 		sb.append("Order #:");
 		sb.append(orderReturn.getOrderNumber());
+		sb.append('\n');
+		sb.append("Confirm #: ");
+		sb.append(orderReturn.getConfirmNumber());
 		sb.append('\n');
 		sb.append("Total order price: ");
 		sb.append(orderReturn.getTotalOrderPrice());
@@ -68,12 +76,16 @@ public class OrderClientWS {
 		sb.append('\n');
 		for (ProductConfirm productConfirm : orderReturn.getProductConfirm()) {
 			sb.append('\n');
-			sb.append(productConfirm.getOrderQuantity());
-			sb.append('\n');
-			sb.append(productConfirm.getPrice());
-			sb.append('\n');
+			sb.append("SKU: ");
 			sb.append(productConfirm.getProductSku());
 			sb.append('\n');
+			sb.append("Quantity: ");
+			sb.append(productConfirm.getOrderQuantity());
+			sb.append('\n');
+			sb.append("Price: ");
+			sb.append(productConfirm.getPrice());
+			sb.append('\n');
+
 		}
 		return sb.toString();
 	}
