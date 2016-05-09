@@ -3,9 +3,13 @@ package com.uciext.ws.hw4.client;
 import javax.xml.ws.WebServiceRef;
 
 import com.uciext.ws.hw4.service.inventory.CatalogResponse;
+import com.uciext.ws.hw4.service.inventory.Order;
 import com.uciext.ws.hw4.service.inventory.OrderService;
 import com.uciext.ws.hw4.service.inventory.OrderServiceWS;
 import com.uciext.ws.hw4.service.inventory.Product;
+import com.uciext.ws.hw4.service.inventory.ProductConfirm;
+import com.uciext.ws.hw4.service.inventory.ProductOrder;
+import com.uciext.ws.hw4.service.inventory.SubmitOrderResponse;
 
 public class OrderClientWS {
 	@WebServiceRef(wsdlLocation = "http://localhost:8080/inventoryWS/ws/OrderServiceHw4?wsdl")
@@ -30,10 +34,48 @@ public class OrderClientWS {
 			} else if ("Get_Catalog".equalsIgnoreCase(operation)) {
 				CatalogResponse catalogResponse = port.catalog(null);
 				System.out.println(toString(catalogResponse));
+			} else if ("Submit_Order".equalsIgnoreCase(operation)) {
+				Order order = new Order();
+				order.setOrderNumber("1");
+				order.setVendorCode("333");
+				order.setVendorName("Vendor333");
+				ProductOrder productOrder = new ProductOrder();
+				productOrder.setProductName("Kindle Fire");
+				productOrder.setProductSku("111003392854");
+				productOrder.setOrderQuantity(2.0);
+				order.getProductOrder().add(productOrder);
+				SubmitOrderResponse.Return orderReturn = port.submitOrder(order);
+				System.out.println(toString(orderReturn));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	private static String toString(SubmitOrderResponse.Return orderReturn) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("Confirm #: ");
+		sb.append(orderReturn.getConfirmNumber());
+		sb.append('\n');
+		sb.append("Order #:");
+		sb.append(orderReturn.getOrderNumber());
+		sb.append('\n');
+		sb.append("Total order price: ");
+		sb.append(orderReturn.getTotalOrderPrice());
+		sb.append('\n');
+		sb.append("Vendor code: ");
+		sb.append(orderReturn.getVendorCode());
+		sb.append('\n');
+		for (ProductConfirm productConfirm : orderReturn.getProductConfirm()) {
+			sb.append('\n');
+			sb.append(productConfirm.getOrderQuantity());
+			sb.append('\n');
+			sb.append(productConfirm.getPrice());
+			sb.append('\n');
+			sb.append(productConfirm.getProductSku());
+			sb.append('\n');
+		}
+		return sb.toString();
 	}
 
 	private static String toString(CatalogResponse catalog) {
