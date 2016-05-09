@@ -15,6 +15,8 @@ public class OrderClientWS {
 	@WebServiceRef(wsdlLocation = "http://localhost:8080/inventoryWS/ws/OrderServiceHw4?wsdl")
 	private static OrderService service;
 
+	private static int orderNumber = 1;
+
 	public static void main(String[] argv) {
 
 		if (argv.length < 1) {
@@ -35,34 +37,46 @@ public class OrderClientWS {
 				CatalogResponse catalogResponse = port.catalog(null);
 				System.out.println(toString(catalogResponse));
 			} else if ("Submit_Order".equalsIgnoreCase(operation)) {
-				Order order = new Order();
-				order.setOrderNumber("1");
-				order.setVendorCode("333");
-				order.setVendorName("Vendor333");
-
-				ProductOrder productOrder = new ProductOrder();
-				productOrder.setProductName("Kindle Fire");
-				productOrder.setProductSku("111003392854");
-				productOrder.setOrderQuantity(2.0);
-				order.getProductOrder().add(productOrder);
-
-				productOrder = new ProductOrder();
-				productOrder.setProductName("Kindle Paperwhite");
-				productOrder.setProductSku("111003392994");
-				productOrder.setOrderQuantity(3.0);
-				order.getProductOrder().add(productOrder);
-
+				Order order = createOrderFireAndPaperWhite(2, 2);
 				SubmitOrderResponse.Return orderReturn = port.submitOrder(order);
 				System.out.println(toString(orderReturn));
+			} else if ("Run_Sequence".equalsIgnoreCase(operation)) {
+				System.out.println(toString(port.catalog(null)));
+				System.out.println(toString(port.submitOrder(createOrderFireAndPaperWhite(5.0, 4.0))));
+				System.out.println(toString(port.submitOrder(createOrderFireAndPaperWhite(5.0, 7.0))));
+				System.out.println(toString(port.submitOrder(createOrderFireAndPaperWhite(5.0, 4.0))));
+				System.out.println(toString(port.submitOrder(createOrderFireAndPaperWhite(5.0, 4.0))));
+
+				System.out.println("WHAT'S WRONG WITH QUANTITIES????????????????????");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
+	private static Order createOrderFireAndPaperWhite(double fireQuantity, double paperWhiteQuantity) {
+		Order order = new Order();
+		order.setOrderNumber(String.valueOf(orderNumber++));
+		order.setVendorCode("333");
+		order.setVendorName("Vendor333");
+
+		ProductOrder fireOrder = new ProductOrder();
+		fireOrder.setProductName("Kindle Fire");
+		fireOrder.setProductSku("111003392854");
+		fireOrder.setOrderQuantity(fireQuantity);
+		order.getProductOrder().add(fireOrder);
+
+		ProductOrder paperWhiteOrder = new ProductOrder();
+		paperWhiteOrder.setProductName("Kindle Paperwhite");
+		paperWhiteOrder.setProductSku("111003392994");
+		paperWhiteOrder.setOrderQuantity(paperWhiteQuantity);
+		order.getProductOrder().add(paperWhiteOrder);
+		return order;
+	}
+
 	private static String toString(SubmitOrderResponse.Return orderReturn) {
 		StringBuilder sb = new StringBuilder();
-		sb.append("Order #:");
+		sb.append("\nORDER:\nOrder #:");
 		sb.append(orderReturn.getOrderNumber());
 		sb.append('\n');
 		sb.append("Confirm #: ");
@@ -92,7 +106,7 @@ public class OrderClientWS {
 
 	private static String toString(CatalogResponse catalog) {
 		StringBuilder sb = new StringBuilder();
-		sb.append("Catalog description: ");
+		sb.append("\nCATALOG:\nCatalog description: ");
 		sb.append(catalog.getReturn().getDescription());
 		sb.append('\n');
 
