@@ -123,13 +123,9 @@ public class OrderClientWS {
 	}
 
 	private static void printCommandUsage() {
-		System.err.println("Usage for InventoryClient: java InventoryClient Hello");
-		System.err.println("Usage for Get Students Count: java StudentClientWS Get_Students_Count");
-		// System.err.println("Usage for Get Student: java StudentClientWS
-		// Get_Student");
-		// System.err.println("Usage for Update Student with XML: java
-		// StudentClientWS Update_Student [middleName]");
-		// System.err.println("Usage for Get Students: java StudentClientWS
-		// Get_Students");
+		System.err.println("Usage for get hello message: java OrderClientWS Hello");
+		System.err.println("Usage for get catalog: java OrderClientWS Get_Catalog");
+		System.err.println("Usage for submit order: java OrderClientWS Submit_Order");
+		System.err.println("Usage for run sequence: java OrderClientWS Run_Sequence");
 	}
 }
