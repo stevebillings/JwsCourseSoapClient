@@ -46,8 +46,6 @@ public class OrderClientWS {
 				System.out.println(toString(port.submitOrder(createOrderFireAndPaperWhite(5.0, 7.0))));
 				System.out.println(toString(port.submitOrder(createOrderFireAndPaperWhite(5.0, 4.0))));
 				System.out.println(toString(port.submitOrder(createOrderFireAndPaperWhite(5.0, 4.0))));
-
-				System.out.println("WHAT'S WRONG WITH QUANTITIES????????????????????");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
