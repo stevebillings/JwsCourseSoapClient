@@ -46,6 +46,10 @@ public class OrderClientWS {
 				System.out.println(toString(port.submitOrder(createOrderFireAndPaperWhite(5.0, 7.0))));
 				System.out.println(toString(port.submitOrder(createOrderFireAndPaperWhite(5.0, 4.0))));
 				System.out.println(toString(port.submitOrder(createOrderFireAndPaperWhite(5.0, 4.0))));
+				System.out.println(toString(port.catalog(null)));
+			} else {
+				System.out.println("ERROR: Invalid argument: " + operation);
+				printCommandUsage();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -53,6 +57,9 @@ public class OrderClientWS {
 	}
 
 	private static Order createOrderFireAndPaperWhite(double fireQuantity, double paperWhiteQuantity) {
+		System.out.println(
+				"\nOrdering " + fireQuantity + " Kindle Fire(s) and " + paperWhiteQuantity + " Kindle PaperWhite(s)");
+
 		Order order = new Order();
 		order.setOrderNumber(String.valueOf(orderNumber++));
 		order.setVendorCode("333");
@@ -74,7 +81,7 @@ public class OrderClientWS {
 
 	private static String toString(SubmitOrderResponse.Return orderReturn) {
 		StringBuilder sb = new StringBuilder();
-		sb.append("\nORDER:\nOrder #:");
+		sb.append("\nORDER CONFIRMATION:\nOrder #:");
 		sb.append(orderReturn.getOrderNumber());
 		sb.append('\n');
 		sb.append("Confirm #: ");
